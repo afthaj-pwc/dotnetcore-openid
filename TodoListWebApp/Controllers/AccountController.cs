@@ -25,8 +25,9 @@ namespace WebApp_OpenIDConnect_DotNet.Controllers
         {
             // Remove all cache entries for this user and send an OpenID Connect sign-out request.
             string userObjectID = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            var authContext = new AuthenticationContext(AzureAdOptions.Settings.Authority,
-                                                        new NaiveSessionCache(userObjectID, HttpContext.Session));
+            var authContext = new AuthenticationContext(
+                AzureAdOptions.Settings.Authority, 
+                new NaiveSessionCache(userObjectID, HttpContext.Session));
             authContext.TokenCache.Clear();
 
             // Let Azure AD sign-out
