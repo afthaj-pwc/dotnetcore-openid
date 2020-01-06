@@ -39,7 +39,8 @@ namespace TodoListWebApp.Tests.UnitTests {
 
         [TestInitialize ()]
         public void SetupTest () {
-            appURL = "https://mcw-todo-app.azurewebsites.net";
+            // appURL = "https://mcw-todo-app.azurewebsites.net";
+            appURL = "http://localhost:8484";
             string driverLocation;
 
             string browser = "Chrome";
