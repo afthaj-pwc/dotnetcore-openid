@@ -7,6 +7,8 @@ trigger:
     exclude:
     - README.md
     - HELP.md
+    include:
+    - TodoListWebApp/*
 
 jobs:
 - template: Templates/build-publish-dotnetcore.yml
