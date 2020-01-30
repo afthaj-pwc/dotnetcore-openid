@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using WebApp_OpenIDConnect_DotNet.Models;
 
 namespace WebApp_OpenIDConnect_DotNet.Controllers
@@ -8,8 +9,17 @@ namespace WebApp_OpenIDConnect_DotNet.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        public HomeController(IConfiguration config)
+        {
+            Configuration = config;
+        }
+
+        private IConfiguration Configuration { get; }
+
         public IActionResult Index()
         {
+            ViewData["Message"] = Configuration.GetValue<string>("SecretMessage");
+
             return View();
         }
 
