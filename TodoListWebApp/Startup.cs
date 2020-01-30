@@ -20,7 +20,7 @@ namespace WebApp_OpenIDConnect_DotNet
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthorization(options =>
             {
@@ -29,8 +29,7 @@ namespace WebApp_OpenIDConnect_DotNet
                     .Build();
             });
 
-            System.Diagnostics.Trace.WriteLine("Configuring services in Development");
-            System.Diagnostics.Trace.WriteLine(Configuration.GetValue<string>("SecretMessage"));
+            System.Diagnostics.Trace.WriteLine("Configuring services in non-production environment");
             AzureAdOptions opts = new AzureAdOptions();
             Configuration.Bind("AzureAd", opts);
             AzureAdOptions.Settings = opts;
@@ -40,7 +39,7 @@ namespace WebApp_OpenIDConnect_DotNet
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureProductionServices(IServiceCollection services)
         {
             services.AddAuthentication(sharedOptions =>
             {
@@ -54,14 +53,15 @@ namespace WebApp_OpenIDConnect_DotNet
                 })
                 .AddCookie();
 
-            System.Diagnostics.Trace.WriteLine("Configuring services in Production");
-            
+            System.Diagnostics.Trace.WriteLine("Configuring services in production environment");
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            System.Diagnostics.Trace.WriteLine("Configuring non-production environment");
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Trace);
 
@@ -80,8 +80,10 @@ namespace WebApp_OpenIDConnect_DotNet
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void ConfigureProduction(IApplicationBuilder app, IHostingEnvironment env)
         {
+            System.Diagnostics.Trace.WriteLine("Configuring production environment");
+
             app.UseExceptionHandler("/Home/Error");
             app.UseStaticFiles();
 
