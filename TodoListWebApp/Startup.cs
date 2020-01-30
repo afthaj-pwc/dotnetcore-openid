@@ -30,6 +30,7 @@ namespace WebApp_OpenIDConnect_DotNet
             });
 
             System.Diagnostics.Trace.WriteLine("Configuring services in Development");
+            System.Diagnostics.Trace.WriteLine(Configuration.GetValue<string>("SecretMessage"));
             AzureAdOptions opts = new AzureAdOptions();
             Configuration.Bind("AzureAd", opts);
             AzureAdOptions.Settings = opts;
@@ -54,6 +55,7 @@ namespace WebApp_OpenIDConnect_DotNet
                 .AddCookie();
 
             System.Diagnostics.Trace.WriteLine("Configuring services in Production");
+            
             services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
         }
