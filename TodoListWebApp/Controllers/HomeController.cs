@@ -18,7 +18,7 @@ namespace WebApp_OpenIDConnect_DotNet.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Message"] = Configuration.GetValue<string>("SecretMessage");
+            ViewData["Message"] = Configuration["SecretMessage"];
 
             return View();
         }
